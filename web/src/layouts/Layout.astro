@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+interface Props {
+  title: string;
+  section: "overview" | "experiments" | "methods";
+}
+const { title, section } = Astro.props;
+const navigation = [
+  ["overview", "/", "Overview"],
+  ["experiments", "/experiments/", "Experiments"],
+  ["methods", "/methods/", "Data & Methods"],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A local research dashboard for the Housing Market World Model. EXP-001: NO-GO at the data feasibility gate."
+    />
+    <title>{title} · Housing Research</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Housing Research home">
+          <span class="brand-icon" aria-hidden="true">
+            ⌂
+          </span>
+          <span>
+            Housing Research
+            <span class="brand-subtitle">World Model / Research notebook</span>
+          </span>
+        </a>
+        <nav aria-label="Main navigation">
+          {navigation.map(([key, href, label]) => (
+            <a href={href} aria-current={section === key ? "page" : undefined}>
+              {label}
+            </a>
+          ))}
+        </nav>
+        <span class="local-label">
+          <span aria-hidden="true"></span>Local · Read-only
+        </span>
+      </div>
+    </header>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>
+        Housing Market World Model <span aria-hidden="true">/</span> Phase 1
+      </span>
+      <span>
+        Research Markdown is the source of truth.
+        <br />
+        Learn & Roadmap are reserved for future phases.
+      </span>
+    </footer>
+  </body>
+</html>

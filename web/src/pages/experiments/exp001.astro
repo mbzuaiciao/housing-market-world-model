@@ -1,0 +1,138 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Decision from "../../components/Decision.astro";
+import { auditSummary, projectHypothesis } from "../../lib/research";
+const summary = await auditSummary();
+const hypothesis = await projectHypothesis();
+const sections = [
+  "Question",
+  "Intuition",
+  "Planned Method",
+  "Audit Findings",
+  "Decision",
+  "Reopen Conditions",
+];
+---
+
+<Layout title="EXP-001" section="experiments">
+  <section class="page-heading">
+    <a class="breadcrumb" href="/experiments/">
+      ← Experiments
+    </a>
+    <p class="eyebrow">EXP-001 · Research explanation</p>
+    <h1>
+      Can attention add
+      <br />
+      <span class="muted">predictive information?</span>
+    </h1>
+    <p class="lead">
+      A completed feasibility audit and a conditional plan for a historical
+      forecasting comparison.
+    </p>
+  </section>
+  <Decision compact />
+  <div class="reader-layout section-space">
+    <aside class="contents">
+      <p class="eyebrow">In this experiment</p>
+      <nav aria-label="Experiment sections">
+        {sections.map((title) => (
+          <a href={"#" + title.toLowerCase().replaceAll(" ", "-")}>{title}</a>
+        ))}
+      </nav>
+      <a class="text-link" href="/methods/">
+        Open source reports ↗
+      </a>
+    </aside>
+    <div class="explanation">
+      <section id="question">
+        <p class="eyebrow">01 / Question</p>
+        <h2>Does past attention help forecast pending listings?</h2>
+        <p>{hypothesis}</p>
+        <a href="/methods/protocol/#hypothesis-and-forecast-clock">
+          Source: hypothesis and forecast clock
+        </a>
+      </section>
+      <section id="intuition">
+        <p class="eyebrow">02 / Intuition</p>
+        <h2>A signal across two platforms.</h2>
+        <p>
+          The proposed comparison tests whether past relative listing attention
+          contains incremental predictive information about newly pending
+          activity. Realtor.com measures attention per property relative to the
+          U.S.; Zillow measures listings transitioning to pending.
+        </p>
+        <p>
+          Viewer-to-purchase links are unobserved. This cannot estimate
+          conversion, willingness to pay or a causal effect of changing
+          attention.
+        </p>
+        <a href="/methods/audit/#what-the-sources-measure">
+          Source: what the sources measure
+        </a>
+      </section>
+      <section id="planned-method">
+        <p class="eyebrow">03 / Planned Method · Not run</p>
+        <h2>A matched forecasting comparison.</h2>
+        <p>
+          The conditional protocol proposes a seasonal naive reference, a
+          regularized autoregression with controls, and an attention-augmented
+          ridge model. The primary horizon is one month; three months is
+          secondary.
+        </p>
+        <p>
+          Every feature must be available at the forecast origin. Models would
+          share metros, origins, targets and availability masks. The planned
+          evaluation uses count MAE and paired time-block uncertainty. A latent
+          sequential extension is conditional on the simple comparison passing a
+          stopping rule and requires a fresh evaluation window.
+        </p>
+        <a href="/methods/protocol/">Read the full conditional specification</a>
+      </section>
+      <section id="audit-findings">
+        <p class="eyebrow">04 / Audit Findings · Completed</p>
+        <h2>Overlap is measurable. Eligibility is unresolved.</h2>
+        <p>{summary.decision}</p>
+        <a href="/methods/audit/">Read the full audit and provenance</a>
+      </section>
+      <section id="decision">
+        <p class="eyebrow">05 / Decision</p>
+        <h2>NO-GO at the data feasibility gate.</h2>
+        <p>
+          The historical forecasting experiment has not been activated. No model
+          comparison or forecast accuracy is available. Passing a legacy county
+          screen does not verify the geographic footprint of the historical
+          series; a revised snapshot does not recover what was known at a past
+          origin.
+        </p>
+        <a href="/methods/audit/#availability-at-prediction-time">
+          Source: availability at prediction time
+        </a>
+      </section>
+      <section id="reopen-conditions">
+        <p class="eyebrow">06 / Reopen Conditions</p>
+        <h2>Verify geography and the information clock.</h2>
+        <ul>
+          <li>
+            Tie Zillow pending and any included control geographies to dated
+            county sets.
+          </li>
+          <li>
+            Reconstruct historical feature values from dated releases at each
+            forecast cutoff.
+          </li>
+          <li>
+            A prospective archive could support a future test after sufficient
+            follow-up.
+          </li>
+        </ul>
+        <p>
+          A later-release lag alone cannot remove retrospective revisions. The
+          protocol remains frozen conditional on GO.
+        </p>
+        <a href="/methods/audit/#availability-at-prediction-time">
+          Source: audit decision and reopening conditions
+        </a>
+      </section>
+    </div>
+  </div>
+</Layout>

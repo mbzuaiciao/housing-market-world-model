@@ -1,0 +1,48 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { documents, renderDocument, sourceUrl } from "../../lib/research";
+export function getStaticPaths() {
+  return documents.map((document) => ({
+    params: { slug: document.slug },
+    props: { document },
+  }));
+}
+const { document } = Astro.props;
+const { code, metadata } = await renderDocument(document);
+---
+
+<Layout title={document.title} section="methods">
+  <section class="page-heading reader-heading">
+    <a class="breadcrumb" href="/methods/">
+      ← Data & Methods
+    </a>
+    <p class="eyebrow">Repository source · Read-only</p>
+    <h1>{document.title}</h1>
+    <p class="lead">{document.description}</p>
+    <a class="text-link" href={sourceUrl(document)}>
+      View source on GitHub ↗
+    </a>
+    <p class="caption">
+      <code>{document.path}</code> · Rendered from the local checkout at
+      build/dev time.
+    </p>
+  </section>
+  <div class="reader-layout">
+    <aside class="contents">
+      <p class="eyebrow">On this page</p>
+      <nav aria-label="Document sections">
+        {metadata.headings
+          .filter((heading) => heading.depth > 1)
+          .map((heading) => (
+            <a
+              class:list={{ nested: heading.depth > 2 }}
+              href={"#" + heading.slug}
+            >
+              {heading.text}
+            </a>
+          ))}
+      </nav>
+    </aside>
+    <article class="prose" set:html={code} />
+  </div>
+</Layout>

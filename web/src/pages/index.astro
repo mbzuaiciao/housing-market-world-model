@@ -1,0 +1,95 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Decision from "../components/Decision.astro";
+import { auditSummary, projectHypothesis } from "../lib/research";
+const { metrics } = await auditSummary();
+const hypothesis = await projectHypothesis();
+---
+
+<Layout title="Overview" section="overview">
+  <section class="page-heading">
+    <p class="eyebrow">Research notebook · Phase 1</p>
+    <h1>
+      Attention. Activity.
+      <br />
+      <span class="muted">What connects them?</span>
+    </h1>
+    <p class="lead">{hypothesis}</p>
+    <a class="text-link" href="/methods/project/">
+      Read the project brief <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+  <Decision />
+  <section class="section-space" aria-labelledby="coverage-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Completed data audit</p>
+        <h2 id="coverage-title">A view of the available evidence.</h2>
+      </div>
+      <a class="text-link" href="/methods/audit/#geography-join-and-exclusions">
+        Read coverage definitions ↗
+      </a>
+    </div>
+    <div class="metrics">
+      {metrics.map((metric) => (
+        <article class="metric">
+          <p class="metric-value">{metric.value}</p>
+          <h3>{metric.label}</h3>
+          <p>{metric.note}</p>
+        </article>
+      ))}
+    </div>
+    <p class="caption">
+      Derived counts from the published snapshots audited November 13, 2026.
+      These describe retrospective coverage, not usable forecast cases or
+      predictive performance.
+    </p>
+  </section>
+  <section class="section-space" aria-labelledby="experiments-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Experiment index</p>
+        <h2 id="experiments-title">One question, carefully scoped.</h2>
+      </div>
+    </div>
+    <a class="experiment-card" href="/experiments/exp001/">
+      <div class="experiment-id">
+        EXP-001 <span class="status">NO-GO</span>
+      </div>
+      <div>
+        <h3>Does listing attention improve activity forecasts?</h3>
+        <p>
+          Explore the question, conditional method, audit findings and
+          conditions to reopen.
+        </p>
+      </div>
+      <span class="arrow" aria-hidden="true">
+        ↗
+      </span>
+    </a>
+  </section>
+  <section class="section-space reading-grid">
+    <article class="panel">
+      <p class="eyebrow">01 / Completed</p>
+      <h2>Understand the data.</h2>
+      <p>
+        Definitions, geography checks, missingness, vintage limitations and
+        provenance.
+      </p>
+      <a class="text-link" href="/methods/audit/">
+        Read the data audit ↗
+      </a>
+    </article>
+    <article class="panel">
+      <p class="eyebrow">02 / Conditional, not activated</p>
+      <h2>Inspect the proposed test.</h2>
+      <p>
+        A frozen forecasting protocol that can activate only after the data gate
+        passes.
+      </p>
+      <a class="text-link" href="/methods/protocol/">
+        Read the conditional protocol ↗
+      </a>
+    </article>
+  </section>
+</Layout>
